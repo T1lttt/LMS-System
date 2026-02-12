@@ -1,0 +1,59 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: LMS_System
+    environment:
+      POSTGRES_DB: LMS_System
+      POSTGRES_USER: LMS_System_user
+      POSTGRES_PASSWORD: admin1234
+    ports:
+      - "5433:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+  keycloak_db:
+    image: postgres:15
+    container_name: keycloak_db
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak_user
+      POSTGRES_PASSWORD: keycloak_pass
+    ports:
+      - "5434:5432"
+    volumes:
+      - keycloak_pg_data:/var/lib/postgresql/data
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:21.1.1
+    container_name: keycloak
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB: postgres
+      KC_DB_URL_HOST: keycloak_db
+      KC_DB_URL_DATABASE: keycloak
+      KC_DB_USERNAME: keycloak_user
+      KC_DB_PASSWORD: keycloak_pass
+    command: start-dev
+    ports:
+      - "8080:8080"
+    depends_on:
+      - keycloak_db
+
+  minio:
+      image: minio/minio:latest
+      container_name: minio
+      ports:
+        - "9000:9000"
+        - "9001:9001"
+      environment:
+        MINIO_ROOT_USER: minioadmin
+        MINIO_ROOT_PASSWORD: minioadmin
+      command: server /data --console-address ":9001"
+      volumes:
+        - minio_data:/data
+
+volumes:
+  pg_data:
+  keycloak_pg_data:
+  €minio_data:

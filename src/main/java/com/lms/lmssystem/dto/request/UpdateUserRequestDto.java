@@ -1,10 +1,11 @@
-package com.lms.lmssystem.dto;
+package com.lms.lmssystem.dto.request;
 
 import lombok.Data;
 
 import java.util.List;
+
 @Data
-public class RegisterUserRequestDto {
+public class UpdateUserRequestDto {
 
     private String username;
     private String email;

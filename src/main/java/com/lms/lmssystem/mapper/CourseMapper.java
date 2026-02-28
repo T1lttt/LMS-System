@@ -19,7 +19,7 @@ public interface CourseMapper {
 
     List<CourseDto> toDtoList(List<Course> courseList);
 
-    List<Course> toModelList(List<ChapterDto> chapterDtoList);
+    List<Course> toModelList(List<CourseDto> courseDtoList);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateFromDto(CourseDto dto, @MappingTarget Course course);

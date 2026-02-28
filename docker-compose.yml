@@ -41,19 +41,35 @@ services:
       - keycloak_db
 
   minio:
-      image: minio/minio:latest
-      container_name: minio
-      ports:
-        - "9000:9000"
-        - "9001:9001"
-      environment:
-        MINIO_ROOT_USER: minioadmin
-        MINIO_ROOT_PASSWORD: minioadmin
-      command: server /data --console-address ":9001"
-      volumes:
-        - minio_data:/data
+    image: quay.io/minio/minio
+    container_name: 'minio_service_container'
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: root
+      MINIO_ROOT_PASSWORD: adminMinio
+    command: server /data --console-address ":9001"
+
+  minio-setup:
+    image: minio/mc
+    depends_on:
+      - minio
+    environment:
+      MC_HOST: http://root:adminMinio@minio:9000
+    entrypoint: >
+      /bin/sh -c "
+               echo Waiting for Minio...
+               until mc alias set minio http://minio:9000 root adminMinio; do
+                sleep 2;
+                done;
+                mc mb --ignore-existing minio/dev-bucket;
+                echo Bucket created;
+                exit 0;
+                     "
+
 
 volumes:
   pg_data:
   keycloak_pg_data:
-  €minio_data:
+

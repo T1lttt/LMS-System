@@ -1,4 +1,4 @@
-package com.lms.lmssystem.dto;
+package com.lms.lmssystem.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

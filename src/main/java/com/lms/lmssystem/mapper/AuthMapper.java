@@ -1,6 +1,6 @@
 package com.lms.lmssystem.mapper;
 
-import com.lms.lmssystem.dto.AuthResponseDto;
+import com.lms.lmssystem.dto.response.AuthResponseDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
